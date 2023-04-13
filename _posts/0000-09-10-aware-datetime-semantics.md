@@ -107,19 +107,19 @@ False
 </tr>
 <tr>
     <td><tt>x == y</tt></td>
-    <td>False</td>
+    <td><b>False</b></td>
     <td>True</td>
     <td>False</td>
 </tr>
 <tr>
     <td><tt>x == z</tt></td>
     <td>False</td>
-    <td>True</td>
+    <td><b>True</b></td>
     <td>True</td>
 </tr>
 <tr>
     <td><tt>y == z</tt></td>
-    <td>True</td>
+    <td><b>True</b></td>
     <td>True</td>
     <td>True</td>
 </tr>
