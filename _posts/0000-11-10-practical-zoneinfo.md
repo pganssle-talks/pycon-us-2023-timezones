@@ -40,25 +40,6 @@ Convert between time zones
 
 --
 
-# Using `zoneinfo`: Absolute time semantics
-
-Many `pytz` users will be surprised by the "wall time" semantics of `datetime`. To deliberately use absolute time semantics, convert to UTC first:
-
-```python
-def absolute_add(dt: datetime, td: timedelta) -> datetime:
-    dt_utc = dt.astimezone(timezone.utc)
-    rv_utc = dt_utc + td
-    return rv_utc.astimezone(dt.tzinfo)
-
-def absolute_diff(dt1: datetime, dt2: datetime) -> timedelta:
-    dt1_utc = dt1.astimezone(timezone.utc)
-    dt2_utc = dt2.astimezone(timezone.utc)
-
-    return dt1 - dt2
-```
-
---
-
 <!-- .slide: data-visibility="hidden" -->
 
 # `zoneinfo`: IANA keys
