@@ -141,6 +141,9 @@ Notes:
 
 And historically, some places have gone the other way as well. In Kwajalein Atoll in 1969, there were two September 30ths!
 
+OK so maybe you say, "Ok, daylight saving time transitions can happen at any time, and there can be millions of them, and any sort of chaos can happen about offset changes, but at least I can count on one thing — if I know someone's location, I know what time zone they're in." But I think you can see where this is going...
+
+
 [15s; T: 6m30s]
 
 --
@@ -150,6 +153,14 @@ And historically, some places have gone the other way as well. In Kwajalein Atol
 ## `Asia/Shanghai`
 ![Asia/Shanghai time zone map](images/china_shanghai.png)
 
+Notes:
+
+OK so maybe you say, "Ok, daylight saving time transitions can happen at any time, and there can be millions of them, and any sort of chaos can happen about offset changes, but at least I can count on one thing — if I know someone's location, I know what time zone they're in." But I think you can see where this is going...
+
+In China, they decided it would be a great idea for there to be one time zone for the entire country. This is normally a country that would span 3 or 4 time zones, but administratively I guess it's easier to use UTC+8 everywhere, which I guess is great in Beijing, but in Xinjiang (pronounced: shin-jee-ang) which is far to the West, the sun rises at around 4:30AM, which is not great, so while the trains and the post offices and government offices all use UTC+8, the locals effectively observe UTC+6. And according to Wikipedia, the main difference of who chooses which time zone is whether you are part of the Uyghyur (pronounced: wee-gurr) minority or Han majority, so in a sense this is actually a racial time zone, so I suppose if you know someone's location and their ethnicity then you can know their time zone....
+
+[1m15s; 7m45s]
+
 --
 
 <!-- .slide: data-transition="none slide-out" -->
@@ -158,8 +169,6 @@ And historically, some places have gone the other way as well. In Kwajalein Atol
 ![Asia/Shanghai time zone map](images/china_overlay.png)
 
 Notes:
-
-OK so maybe you say, "Ok, daylight saving time transitions can happen at any time, and there can be millions of them, and any sort of chaos can happen about offset changes, but at least I can count on one thing — if I know someone's location, I know what time zone they're in." But I think you can see where this is going...
 
 In China, they decided it would be a great idea for there to be one time zone for the entire country. This is normally a country that would span 3 or 4 time zones, but administratively I guess it's easier to use UTC+8 everywhere, which I guess is great in Beijing, but in Xinjiang (pronounced: shin-jee-ang) which is far to the West, the sun rises at around 4:30AM, which is not great, so while the trains and the post offices and government offices all use UTC+8, the locals effectively observe UTC+6. And according to Wikipedia, the main difference of who chooses which time zone is whether you are part of the Uyghyur (pronounced: wee-gurr) minority or Han majority, so in a sense this is actually a racial time zone, so I suppose if you know someone's location and their ethnicity then you can know their time zone....
 
