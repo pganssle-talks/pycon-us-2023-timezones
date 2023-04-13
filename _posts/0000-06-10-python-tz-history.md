@@ -30,6 +30,8 @@ class ET(tzinfo):
         return dst_start <= dt.replace(tzinfo=None) < dst_end
 ```
 
+--
+
 # History of Python's Time Zones: Concrete Time Zones
 
 - UTC / Fixed Offsets
@@ -37,6 +39,8 @@ class ET(tzinfo):
 - IANA Time Zones
 
 --
+
+<!-- .slide: data-visibility="hidden" -->
 
 # History of Python's Time Zones: Ambiguous time problem
 
