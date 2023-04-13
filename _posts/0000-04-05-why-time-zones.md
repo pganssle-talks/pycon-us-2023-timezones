@@ -35,3 +35,26 @@ for dt in closing_times:
 2020-03-10 21:00:00+00:00
 2020-03-11 21:00:00+00:00
 <pre>
+
+--
+
+<div style="position: fixed; display: flex; align-items: center; justify-content: space-around; top: 40%; font-size: 3rem">
+<div style="max-width: 80%">
+When storing datetimes where the <em>wall time</em> matters (e.g. meetings), you must store local time, because the mapping between UTC and local time is <em>not stable</em>.</div>
+</div>
+
+--
+
+<p style="text-align: center">
+<img src="images/lebanon_news.png" alt="Lebanon wakes up in two time zones because of daylight savings spat — a news article from reuters about Lebanon changing their time zone at the last minute."
+/>
+
+</p>
+
+<p style="text-align: center">
+<img src="images/timing_of_timezone_changes.png" alt="A screenshot of the opening paragraph of Matt Johnson-Pint's 'On the Timing of Time Zone Changes'"
+/>
+</p>
+
+<span><em>Further Reading:</em> 
+<a href="https://codeofmatt.com/on-the-timing-of-time-zone-changes/">On the Timing of Time Zone Changes</a>, <a href="https://codeofmatt.com/time-zone-chaos-inevitable-in-egypt/">Time Zone Chaos Inevitable in Egypt</a></span>
