@@ -33,7 +33,11 @@ Now that we've got the basics down, let's move into the mandatory part of any ti
 
 You may have a friend — it's OK, I know you are asking for a friend — who thinks that there are only 24 time zones, and that they are all 1-hour increments away from UTC, but if you go to Australia or India, you'll find time zones that are at half-hour offsets, and if you go to Nepal, you'll find they even have one with a 15-minute offset. And if you look at historical data, like in Liberia before 1979, there are offsets that aren't even a whole number of *minutes* away from UTC.
 
-Your friend may also think that the only time that the only time UTC offsets will change is during a daylight saving time change and vice versa — that the offset always changes when DST status changes, but in Portugal in 1992, they decided they didn't want to be on Western European Time anymore, but they wanted to join the UTC+1 time zone, Central European Time, ...
+Your friend may also think that the only time that the only time UTC offsets will change is during a daylight saving time change and vice versa — that the offset always changes when DST status changes, but in Portugal in 1992, they decided they didn't want to be on Western European Time anymore, but they wanted to join the UTC+1 time zone, Central European Time, so they decided they wanted to shift their base offset by 1 hour, and they decided to do this when Daylight Saving Time was schedule to end *anyway*, so that basically DST ended, but the clocks didn't change. This is very convenient for humans, but it also breaks anyone whose code relies on Daylight Saving Time transitions always corresponding to a change in offset.
+
+As an aside, in 1996 they decided that having the sun set after midnight in the summer was not a good idea, so they did the same thing in reverse.
+
+[2m 15s; T: 4:00]
 
 --
 
@@ -59,6 +63,13 @@ Your friend may also think that the only time that the only time UTC offsets wil
 <br/>
 
 <span >... and Morocco in 2013-present, and Egypt in 2010 and 2014, and Palestine in 2011.</span>
+
+
+Notes:
+
+So now we know a couple of things that can happen, and you may think, "OK, the only things that can happen are changes to the base offset and daylight saving time, which will just be two transitions a year." But, not so fast — in Morocco in most years since 2012, there have been *two* daylight saving time transitions. For example here in 2012 they went on to summer time in April, then in July they went back to standard time for 1 month, then back onto summer time. Seems like a kind of weird thing to do until you realize that Morocco is a majority Muslim country, and in 2012 this month was the month of Ramadan, when Muslims aren't supposed to eat anything before sundown. All of a sudden that extra hour before sunset isn't looking too good, so they just go back to standard time.
+
+[1m; T: 5m]
 
 --
 
@@ -88,6 +99,17 @@ Your friend may also think that the only time that the only time UTC offsets wil
 
 Also Samoa on January 29, 2011.
 
+Notes:
+
+OK, so we know there can be all kinds of weird stuff around daylight saving time transitions, but at least we can feel confident that these things always happen at like 2 in the morning, we're never going to see some discontinuity in the middle of the day, but alas even this is not true.
+
+In 1994, Christmas Island, which is part of Kiribati (prounounced kee-ree-bahs), which is an island in the South Pacific, decided that they wanted to be on the other side of the international dateline. Presumably this was something to do with aligning their timekeeping more closely with one of their trading partners or something, but the upshot of it was that they decided that they were going to just not have a December 31st in 1994. They would just go December 30th 11:159 then one minute later Happy New Year!
+
+And you may so, "Oh well that's just something that happens in the far past, it was the 90s, we were inventing programming languages and watching Seinfeld, that couldn't happen *today*, could it? But just a bit over a decade ago, the same thing happened in Samoa in 2011.
+
+[1m 15s; T: 6m15s]
+
+
 --
 
 # Complicated time zones
@@ -102,7 +124,7 @@ Also Samoa on January 29, 2011.
 
 
 ```python
->>> dt_before = datetime(1969, 9, 30, 11, 59, tzinfo=tz.gettz('Pacific/Kwajalein'))
+>>> dt_before = datetime(1969, 9, 30, 11, 59, tzinfo=ZoneInfo('Pacific/Kwajalein'))
 >>> dt_after = add_absolute(dt_before, timedelta(minutes=2))
 
 >>> print(dt_before)
@@ -115,6 +137,11 @@ Also Samoa on January 29, 2011.
 <br/>
 <br/>
 
+Notes: 
+
+And historically, some places have gone the other way as well. In Kwajalein Atoll in 1969, there were two September 30ths!
+
+[15s; T: 6m30s]
 
 --
 
@@ -129,3 +156,11 @@ Also Samoa on January 29, 2011.
 
 ## `Asia/Urumqi`
 ![Asia/Shanghai time zone map](images/china_overlay.png)
+
+Notes:
+
+OK so maybe you say, "Ok, daylight saving time transitions can happen at any time, and there can be millions of them, and any sort of chaos can happen about offset changes, but at least I can count on one thing — if I know someone's location, I know what time zone they're in." But I think you can see where this is going...
+
+In China, they decided it would be a great idea for there to be one time zone for the entire country. This is normally a country that would span 3 or 4 time zones, but administratively I guess it's easier to use UTC+8 everywhere, which I guess is great in Beijing, but in Xinjiang (pronounced: shin-jee-ang) which is far to the West, the sun rises at around 4:30AM, which is not great, so while the trains and the post offices and government offices all use UTC+8, the locals effectively observe UTC+6. And according to Wikipedia, the main difference of who chooses which time zone is whether you are part of the Uyghyur (pronounced: wee-gurr) minority or Han majority, so in a sense this is actually a racial time zone, so I suppose if you know someone's location and their ethnicity then you can know their time zone....
+
+[1m15s; 7m45s]

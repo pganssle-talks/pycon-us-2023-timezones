@@ -30,20 +30,43 @@ class ET(tzinfo):
         return dst_start <= dt.replace(tzinfo=None) < dst_end
 ```
 
---
-
 # History of Python's Time Zones: Concrete Time Zones
 
-## Concrete Time Zones
+- UTC / Fixed Offsets
+- Local time
+- IANA Time Zones
 
-- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
-- Local time <span class="fragment" style="color: orange" data-fragment-index="2"><strong>○</strong> Semi-supported in 3.6+</span>
-- IANA Time Zones <span class="fragment" style="color: red" data-fragment-index="3">✘ (as of Python 3.8)</span>
+--
 
-<p style="text-align: center">
-<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
-     class="fragment" data-fragment-index="1" />
-</p>
+# History of Python's Time Zones: Ambiguous time problem
+
+```python
+EASTERN = ET()
+
+print(datetime(2017, 11, 4, 12, 0, tzinfo=EASTERN))
+print(datetime(2017, 11, 5, 12, 0, tzinfo=EASTERN))
+```
+
+```
+2017-11-04 12:00:00-04:00
+2017-11-05 12:00:00-05:00
+```
+
+<br/><br/>
+
+```python
+dt_before_utc = datetime(2017, 11, 5, 0, 30, tzinfo=EASTERN).astimezone(datetime.UTC)
+dt_during = (dt_before_utc + timedelta(hours=1)).astimezone(EASTERN)  # 1:30 EDT
+dt_after = (dt_before_utc + timedelta(hours=2)).astimezone(EASTERN)   # 1:30 EST
+
+print(dt_during)   # Lookin good!
+print(dt_after)    # OH NO!
+```
+
+```
+2017-11-05 01:30:00-04:00
+2017-11-05 02:30:00-05:00
+```
 
 --
 
@@ -102,12 +125,13 @@ Notice the lack of a `2004-04-04 02:30:00`!
 
 --
 
-# PEP 431: Time zone support improvements
+# History of Python's Time Zones: Concrete Time Zones
 
-- Proposed by Lennart Regebro in December 2012
-- Added a concrete `datetime.zoneinfo` class
-- Pulls data from the IANA database
-- Added `is_dst` parameter to the `datetime` constructor and several other functions.
+- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
+- Local time
+- IANA Time Zones
 
-
-**Status:** Withdrawn — as written, this would require extensive changes to the semantics of `datetime` to handle ambiguous times properly.
+<p style="text-align: center">
+<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
+     class="fragment" data-fragment-index="1" />
+</p>

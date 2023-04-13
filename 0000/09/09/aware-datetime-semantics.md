@@ -127,59 +127,34 @@ False
 
 </div>
 
----
-
-# Semantics of aware datetime arithmetic
-
-An analogous problem for comparison semantics is that addition across a DST boundary is not well-defined:
-
-```python
->>> NYC = ZoneInfo("America/New_York")
->>> dt1 = datetime(2020, 3, 7, 13, tzinfo=NYC)
->>> dt2 = d1 + timedelta(days=1)
-```
-
-Given that there is a DST transition between `dt1` and `dt2`, there are two options:
-
-```python
->>> print(wall_add(dt1, timedelta(days=1)))  # Next calendar day at the same time
-2020-03-08 13:00-04:00
-
->>> print(absolute_add(dt1, timedelta(days=1)))  # 24 elapsed hours after dt1
-2020-03-08 12:00-04:00
-```
-
 --
 
-# Semantics of aware datetime arithmetic
+# `zoneinfo`: Cache behavior
 
+   Calls to the default constructor with identical arguments are guaranteed to return objects which compare as identical; specifically, the following must always be valid:
 
-Datetime always uses wall-time semantics when interacting with a `timedelta`:
+   ```python
+   a = ZoneInfo(key)
+   b = ZoneInfo(key)
+   assert a is b
+   ```
 
+   This is because `datetime` assumes that time zones are singletons, which would cause confusing results if we used a simpler implementation:
 
-```python
->>> print(wall_add(dt1, timedelta(days=1)))
-2020-03-08 13:00-04:00
+   ```python
+   >>> from datetime import *
+   >>> from simple_zoneinfo import SimpleZoneInfo
+   >>> dt0 = datetime(2020, 3, 8, tzinfo=SimpleZoneInfo("America/New_York"))
+   >>> dt1 = dt0 + timedelta(1)
+   >>> dt2 = dt1.replace(tzinfo=SimpleZoneInfo("America/New_York"))
+   >>> dt2 == dt1
+   True
+   >>> print(dt2 - dt1)
+   0:00:00
+   >>> print(dt2 - dt0)
+   23:00:00
+   >>> print(dt1 - dt0)
+   1 day, 0:00:00
+   ```
 
->>> print(absolute_add(dt1, timedelta(days=1)))
-2020-03-08 12:00-04:00
-
->>> print(dt1 + timedelta(days=1))
-2020-03-08 13:00-04:00
-```
-
-When two `datetime`s are subtracted, the behavior is different for same-zone and different-zone subtractions:
-
-```
->>> dt2 = datetime(2020, 3, 8, 13, tzinfo=NYC)
->>> dt1_same = datetime(2020, 3, 7, 13, tzinfo=NYC)
->>> dt1_different = dt1_same.astimezone(timezone.utc)  # dt1_same == dt1_different!
-
->>> print(dt2 - dt1_same)
-1 day, 0:00:00
-
->>> print(dt2 - dt1_different)
-23:00:00
-```
-
-*See my blog post "Semantics of timezone-aware datetime arithmetic" (https://blog.ganssle.io/articles/2018/02/aware-datetime-arithmetic.html) for a more thorough analysis.*
+See [PEP 615](https://www.python.org/dev/peps/pep-0615/) and [the documentation](https://docs.python.org/3/library/zoneinfo.html) for more information than you would ever want about working with the cache.

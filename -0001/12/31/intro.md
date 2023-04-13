@@ -24,4 +24,8 @@ Paul Ganssle
 
 Notes:
 
+Four years ago, I came to PyCon and gave a talk called Working with Time Zones: Everything You Wish You Didn't Need to Know. That same year, I gave a talk at the language summit called "Time Zones in the Standard Library", where I proposed adding a new time zone provider into the standard library, which eventually led to the creation of the `zoneinfo` module, mostly but not completely obsoleting my old talk. So this year I decided for the second edition of my time zone talk.
 
+OK, so we've got a lot to cover and only 30 minutes to cover it in, so let's jump right in with the basics of time zones!
+
+(30s)

@@ -70,6 +70,12 @@ Paul Ganssle
 
 Notes:
 
+Four years ago, I came to PyCon and gave a talk called Working with Time Zones: Everything You Wish You Didn't Need to Know. That same year, I gave a talk at the language summit called "Time Zones in the Standard Library", where I proposed adding a new time zone provider into the standard library, which eventually led to the creation of the `zoneinfo` module, mostly but not completely obsoleting my old talk. So this year I decided for the second edition of my time zone talk.
+
+OK, so we've got a lot to cover and only 30 minutes to cover it in, so let's jump right in with the basics of time zones!
+
+(30s)
+
 					</textarea>
 				</section>
 				
@@ -98,9 +104,7 @@ Notes:
 
 Notes:
 
-Before we start in on the history of time zones in Python, it's probably a good idea to give you a little tour of the problem we're trying to solve.
-
-We can start out easy, with UTC. UTC is the reference time zone, it's the 0 against which offsets are measured. It is mostly monotonic — which is to say that it doesn't have daylight saving time. It still has leap seconds, which is infuriating, since leap seconds don't belong in civil time *at all*, much less in the reference time zone, but I think the damage is done there.
+We can start out easy, with UTC. UTC is the reference time zone, it's the 0 against which offsets are measured. It is mostly monotonic — which is to say that it doesn't have daylight saving time. It still has leap seconds, which is infuriating, since leap seconds don't belong in civil time *at all*, much less in the reference time zone, but there has recently been talk of ending the practice of leap seconds, so hopefully, going forward, UTC will actually record 1 second per second of elapsed time.
 
 Another concept that is important to know is the difference between time zones and offsets.
 
@@ -109,6 +113,8 @@ UTC-6 is an offset. It means that you should add 6 hours to the local time to ge
 `America/Chicago` is a time zone - it's a set of rules for what offsets and abbreviations apply in a given region as a function of time.
 
 `CST`, which is the abbreviation for the offset that applies in Chicago right now, is a highly context-dependent abbreviation referring to an offset. In our context, it means Central Standard Time, but if you're in Cuba, it refers to Cuba Standard Time, and if you're in China, it refers to China standard time. Word of advice: never rely on these 3-letter abbreviations. Don't rely on them meaning a specific thing, and don't even rely on every zone having an associated 3-letter abbreviation.
+
+[1m 15s; T: 1m 45s]
 
 					</textarea>
 				</section>
@@ -150,7 +156,11 @@ Now that we've got the basics down, let's move into the mandatory part of any ti
 
 You may have a friend — it's OK, I know you are asking for a friend — who thinks that there are only 24 time zones, and that they are all 1-hour increments away from UTC, but if you go to Australia or India, you'll find time zones that are at half-hour offsets, and if you go to Nepal, you'll find they even have one with a 15-minute offset. And if you look at historical data, like in Liberia before 1979, there are offsets that aren't even a whole number of *minutes* away from UTC.
 
-Your friend may also think that the only time that the only time UTC offsets will change is during a daylight saving time change and vice versa — that the offset always changes when DST status changes, but in Portugal in 1992, they decided they didn't want to be on Western European Time anymore, but they wanted to join the UTC+1 time zone, Central European Time, ...
+Your friend may also think that the only time that the only time UTC offsets will change is during a daylight saving time change and vice versa — that the offset always changes when DST status changes, but in Portugal in 1992, they decided they didn't want to be on Western European Time anymore, but they wanted to join the UTC+1 time zone, Central European Time, so they decided they wanted to shift their base offset by 1 hour, and they decided to do this when Daylight Saving Time was schedule to end *anyway*, so that basically DST ended, but the clocks didn't change. This is very convenient for humans, but it also breaks anyone whose code relies on Daylight Saving Time transitions always corresponding to a change in offset.
+
+As an aside, in 1996 they decided that having the sun set after midnight in the summer was not a good idea, so they did the same thing in reverse.
+
+[2m 15s; T: 4:00]
 
 --
 
@@ -176,6 +186,13 @@ Your friend may also think that the only time that the only time UTC offsets wil
 <br/>
 
 <span >... and Morocco in 2013-present, and Egypt in 2010 and 2014, and Palestine in 2011.</span>
+
+
+Notes:
+
+So now we know a couple of things that can happen, and you may think, "OK, the only things that can happen are changes to the base offset and daylight saving time, which will just be two transitions a year." But, not so fast — in Morocco in most years since 2012, there have been *two* daylight saving time transitions. For example here in 2012 they went on to summer time in April, then in July they went back to standard time for 1 month, then back onto summer time. Seems like a kind of weird thing to do until you realize that Morocco is a majority Muslim country, and in 2012 this month was the month of Ramadan, when Muslims aren't supposed to eat anything before sundown. All of a sudden that extra hour before sunset isn't looking too good, so they just go back to standard time.
+
+[1m; T: 5m]
 
 --
 
@@ -205,6 +222,17 @@ Your friend may also think that the only time that the only time UTC offsets wil
 
 Also Samoa on January 29, 2011.
 
+Notes:
+
+OK, so we know there can be all kinds of weird stuff around daylight saving time transitions, but at least we can feel confident that these things always happen at like 2 in the morning, we're never going to see some discontinuity in the middle of the day, but alas even this is not true.
+
+In 1994, Christmas Island, which is part of Kiribati (prounounced kee-ree-bahs), which is an island in the South Pacific, decided that they wanted to be on the other side of the international dateline. Presumably this was something to do with aligning their timekeeping more closely with one of their trading partners or something, but the upshot of it was that they decided that they were going to just not have a December 31st in 1994. They would just go December 30th 11:159 then one minute later Happy New Year!
+
+And you may so, "Oh well that's just something that happens in the far past, it was the 90s, we were inventing programming languages and watching Seinfeld, that couldn't happen *today*, could it? But just a bit over a decade ago, the same thing happened in Samoa in 2011.
+
+[1m 15s; T: 6m15s]
+
+
 --
 
 # Complicated time zones
@@ -219,7 +247,7 @@ Also Samoa on January 29, 2011.
 
 
 ```python
->>> dt_before = datetime(1969, 9, 30, 11, 59, tzinfo=tz.gettz('Pacific/Kwajalein'))
+>>> dt_before = datetime(1969, 9, 30, 11, 59, tzinfo=ZoneInfo('Pacific/Kwajalein'))
 >>> dt_after = add_absolute(dt_before, timedelta(minutes=2))
 
 >>> print(dt_before)
@@ -232,6 +260,11 @@ Also Samoa on January 29, 2011.
 <br/>
 <br/>
 
+Notes: 
+
+And historically, some places have gone the other way as well. In Kwajalein Atoll in 1969, there were two September 30ths!
+
+[15s; T: 6m30s]
 
 --
 
@@ -246,6 +279,14 @@ Also Samoa on January 29, 2011.
 
 ## `Asia/Urumqi`
 ![Asia/Shanghai time zone map](images/china_overlay.png)
+
+Notes:
+
+OK so maybe you say, "Ok, daylight saving time transitions can happen at any time, and there can be millions of them, and any sort of chaos can happen about offset changes, but at least I can count on one thing — if I know someone's location, I know what time zone they're in." But I think you can see where this is going...
+
+In China, they decided it would be a great idea for there to be one time zone for the entire country. This is normally a country that would span 3 or 4 time zones, but administratively I guess it's easier to use UTC+8 everywhere, which I guess is great in Beijing, but in Xinjiang (pronounced: shin-jee-ang) which is far to the West, the sun rises at around 4:30AM, which is not great, so while the trains and the post offices and government offices all use UTC+8, the locals effectively observe UTC+6. And according to Wikipedia, the main difference of who chooses which time zone is whether you are part of the Uyghyur (pronounced: wee-gurr) minority or Han majority, so in a sense this is actually a racial time zone, so I suppose if you know someone's location and their ethnicity then you can know their time zone....
+
+[1m15s; 7m45s]
 
 					</textarea>
 				</section>
@@ -290,6 +331,29 @@ for dt in closing_times:
 2020-03-11 21:00:00+00:00
 <pre>
 
+--
+
+<div style="position: fixed; display: flex; align-items: center; justify-content: space-around; top: 40%; font-size: 3rem">
+<div style="max-width: 80%">
+When storing datetimes where the <em>wall time</em> matters (e.g. meetings), you must store local time, because the mapping between UTC and local time is <em>not stable</em>.</div>
+</div>
+
+--
+
+<p style="text-align: center">
+<img src="images/lebanon_news.png" alt="Lebanon wakes up in two time zones because of daylight savings spat — a news article from reuters about Lebanon changing their time zone at the last minute."
+/>
+
+</p>
+
+<p style="text-align: center">
+<img src="images/timing_of_timezone_changes.png" alt="A screenshot of the opening paragraph of Matt Johnson-Pint's 'On the Timing of Time Zone Changes'"
+/>
+</p>
+
+<span><em>Further Reading:</em> 
+<a href="https://codeofmatt.com/on-the-timing-of-time-zone-changes/">On the Timing of Time Zone Changes</a>, <a href="https://codeofmatt.com/time-zone-chaos-inevitable-in-egypt/">Time Zone Chaos Inevitable in Egypt</a></span>
+
 					</textarea>
 				</section>
 				
@@ -304,6 +368,12 @@ for dt in closing_times:
     * `tzname`: The (usually abbreviated) name of the time zone at the given datetime
     * `utcoffset`: The offset from UTC at the given datetime
     * `dst`: The size of the `datetime`'s DST offset (usually 0 or 1 hour)
+
+Notes:
+
+So now that we've established that you actually need to *ugh* understand the abstractions you are working with, let's get into some of the details of how it works in Python.
+
+Python's time zone model is based around an abstract base class `tzinfo`. The idea is that each time zone object provides three functions that take the `datetime` as an argument. There's `tzname`, which gives the name of the zone at the given datetime, `utcoffset`, which does most of the heavy lifting here, this gives the offset that applies at the relevant datetime, and then `dst`, which gives you the difference between the current offset and standard time. I think basically every time I've seen someone use the `dst` method it was something that I would consider a mistake, so basically never use that last one.
 
 					</textarea>
 				</section>
@@ -342,20 +412,43 @@ class ET(tzinfo):
         return dst_start <= dt.replace(tzinfo=None) < dst_end
 ```
 
---
-
 # History of Python's Time Zones: Concrete Time Zones
 
-## Concrete Time Zones
+- UTC / Fixed Offsets
+- Local time
+- IANA Time Zones
 
-- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
-- Local time <span class="fragment" style="color: orange" data-fragment-index="2"><strong>○</strong> Semi-supported in 3.6+</span>
-- IANA Time Zones <span class="fragment" style="color: red" data-fragment-index="3">✘ (as of Python 3.8)</span>
+--
 
-<p style="text-align: center">
-<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
-     class="fragment" data-fragment-index="1" />
-</p>
+# History of Python's Time Zones: Ambiguous time problem
+
+```python
+EASTERN = ET()
+
+print(datetime(2017, 11, 4, 12, 0, tzinfo=EASTERN))
+print(datetime(2017, 11, 5, 12, 0, tzinfo=EASTERN))
+```
+
+```
+2017-11-04 12:00:00-04:00
+2017-11-05 12:00:00-05:00
+```
+
+<br/><br/>
+
+```python
+dt_before_utc = datetime(2017, 11, 5, 0, 30, tzinfo=EASTERN).astimezone(datetime.UTC)
+dt_during = (dt_before_utc + timedelta(hours=1)).astimezone(EASTERN)  # 1:30 EDT
+dt_after = (dt_before_utc + timedelta(hours=2)).astimezone(EASTERN)   # 1:30 EST
+
+print(dt_during)   # Lookin good!
+print(dt_after)    # OH NO!
+```
+
+```
+2017-11-05 01:30:00-04:00
+2017-11-05 02:30:00-05:00
+```
 
 --
 
@@ -414,15 +507,16 @@ Notice the lack of a `2004-04-04 02:30:00`!
 
 --
 
-# PEP 431: Time zone support improvements
+# History of Python's Time Zones: Concrete Time Zones
 
-- Proposed by Lennart Regebro in December 2012
-- Added a concrete `datetime.zoneinfo` class
-- Pulls data from the IANA database
-- Added `is_dst` parameter to the `datetime` constructor and several other functions.
+- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
+- Local time
+- IANA Time Zones
 
-
-**Status:** Withdrawn — as written, this would require extensive changes to the semantics of `datetime` to handle ambiguous times properly.
+<p style="text-align: center">
+<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
+     class="fragment" data-fragment-index="1" />
+</p>
 
 					</textarea>
 				</section>
@@ -583,28 +677,49 @@ Whether you are on the fold side is a *property of the datetime*:
 				
 				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
 					<textarea data-template>
-# PEP 615: Support for the IANA Time Zone Database in the Standard Library
+# Concrete Time Zones: Local time
+
+- UTC / Fixed Offsets <span style="color: green">Added in 3.2</span>
+- Local time <span style="color: orange"><strong>○</strong> Basically supported in 3.6+</span>
+- IANA Time Zones <span class="fragment" style="color: red" data-fragment-index="1">✘ (as of Python 3.8)</span>
+
+<br/>
+<br/>
+
+Naïve datetimes are now considered system local times, and you can attach a fixed offset zone to them to probe time zone information:
+
+```python
+>>> print(datetime(2023, 11, 4, 12).astimezone())
+2023-11-04 12:00:00-04:00
+```
+
+```python
+>>> print(datetime(2023, 11, 5, 12).astimezone())
+2023-11-05 12:00:00-05:00
+```
 
 <br/>
 
-- Introduced in Python 3.9
-- Adds the `zoneinfo` module
-- Introduces the `tzdata` first-party PyPI package
+Setting `fold` on a naïve datetime works:
+
+```python
+>>> print(datetime(2023, 11, 5, 1, fold=0).astimezone())
+2023-11-05 01:00:00-04:00
+>>> print(datetime(2023, 11, 5, 1, fold=1).astimezone())
+2023-11-05 01:00:00-05:00
+```
 
 <br/>
 
-<div style="text-align:center">
-<img 
-    src="images/zoneinfo-documentation.png"
-    alt="A screenshot of Python 3.9's zoneinfo documentation."/>
-</div>
+See my blog posts: [Why naïve times are local times](https://blog.ganssle.io/articles/2022/04/naive-local-datetimes.html) and [Stop using utcnow and utcfromtimestamp](https://blog.ganssle.io/articles/2019/11/utcnow.html)
 
-<br/>
+					</textarea>
+				</section>
+				
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
+					<textarea data-template>
 
-
---
-
-# `zoneinfo` data source: IANA Time Zones
+# data source: IANA Time Zones
 
 - Provides historical time zone information
 - Standard open source (public domain) source for time zone information
@@ -619,42 +734,21 @@ Whether you are on the fold side is a *property of the datetime*:
 
 --
 
-# `zoneinfo` design parameters
+# PEP 615: Support for the IANA Time Zone Database in the Standard Library
 
-1. Whenever the system has IANA time zone data available, it should be preferred.
+<div style="text-align:center">
+<img 
+    src="images/zoneinfo-documentation.png"
+    alt="A screenshot of Python 3.9's zoneinfo documentation."/>
+</div>
 
-2. End users should be able to specify where their time zone data is deployed.
+- When the system has IANA time zone data available, it is used
+    - Defaults to well-known deployment locations
+    - Configurable in-program using `zoneinf.reset_tzpath`
+    - Configurable with environment variable `PYTHONTZPATH`
+    - Default can be set at compile time
 
-3. It should be simple to use `zoneinfo` on any platform.
-
-<br/>
-<br/>
-
-# Solution <!-- .element: class="fragment" data-fragment-index="1" -->
-
-<ol class="fragment" data-fragment-index="1">
-<li><strong><tt>zoneinfo.TZPATH</tt></strong>: Time zone search path
-    <ul>
-        <li>Defaults to well-known deployment locations</li>
-        <li>Configurable in-program using <tt>zoneinfo.reset_tzpath()</tt></li>
-        <li>Configurable with environment variable <tt>PYTHONTZPATH</tt></li>
-        <li>Default can be set at compile time (for distro packagers)</li>
-    </ul>
-    <br/>
-</li>
-
-<li><strong><tt>tzdata</tt></strong>: First party data-only fallback library
-    <ul>
-     <li>Not bundled with Python by default yet</li>
-     <li>Required on Windows</li>
-     <li>Doesn't hurt anything on other platforms</li>
-     </ul>
-</li>
-</ol>
-
-Notes:
-
-**Switch to camera 2**
+- We also provide the `tzdata` package on PyPI — a "first party" data-only fallback library.
 
 					</textarea>
 				</section>
@@ -790,8 +884,43 @@ False
 
 </div>
 
----
+--
 
+# `zoneinfo`: Cache behavior
+
+   Calls to the default constructor with identical arguments are guaranteed to return objects which compare as identical; specifically, the following must always be valid:
+
+   ```python
+   a = ZoneInfo(key)
+   b = ZoneInfo(key)
+   assert a is b
+   ```
+
+   This is because `datetime` assumes that time zones are singletons, which would cause confusing results if we used a simpler implementation:
+
+   ```python
+   >>> from datetime import *
+   >>> from simple_zoneinfo import SimpleZoneInfo
+   >>> dt0 = datetime(2020, 3, 8, tzinfo=SimpleZoneInfo("America/New_York"))
+   >>> dt1 = dt0 + timedelta(1)
+   >>> dt2 = dt1.replace(tzinfo=SimpleZoneInfo("America/New_York"))
+   >>> dt2 == dt1
+   True
+   >>> print(dt2 - dt1)
+   0:00:00
+   >>> print(dt2 - dt0)
+   23:00:00
+   >>> print(dt1 - dt0)
+   1 day, 0:00:00
+   ```
+
+See [PEP 615](https://www.python.org/dev/peps/pep-0615/) and [the documentation](https://docs.python.org/3/library/zoneinfo.html) for more information than you would ever want about working with the cache.
+
+					</textarea>
+				</section>
+				
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
+					<textarea data-template>
 # Semantics of aware datetime arithmetic
 
 An analogous problem for comparison semantics is that addition across a DST boundary is not well-defined:
@@ -801,6 +930,9 @@ An analogous problem for comparison semantics is that addition across a DST boun
 >>> dt1 = datetime(2020, 3, 7, 13, tzinfo=NYC)
 >>> dt2 = d1 + timedelta(days=1)
 ```
+
+<br/>
+<br/>
 
 Given that there is a DST transition between `dt1` and `dt2`, there are two options:
 
@@ -847,86 +979,6 @@ When two `datetime`s are subtracted, the behavior is different for same-zone and
 
 *See my blog post "Semantics of timezone-aware datetime arithmetic" (https://blog.ganssle.io/articles/2018/02/aware-datetime-arithmetic.html) for a more thorough analysis.*
 
-					</textarea>
-				</section>
-				
-				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
-					<textarea data-template>
-# `zoneinfo`: Cache behavior
-
-   Calls to the default constructor with identical arguments are guaranteed to return objects which compare as identical; specifically, the following must always be valid:
-
-   ```python
-   a = ZoneInfo(key)
-   b = ZoneInfo(key)
-   assert a is b
-   ```
-
-   This is because `datetime` assumes that time zones are singletons, which would cause confusing results if we used a simpler implementation:
-
-   ```python
-   >>> from datetime import *
-   >>> from simple_zoneinfo import SimpleZoneInfo
-   >>> dt0 = datetime(2020, 3, 8, tzinfo=SimpleZoneInfo("America/New_York"))
-   >>> dt1 = dt0 + timedelta(1)
-   >>> dt2 = dt1.replace(tzinfo=SimpleZoneInfo("America/New_York"))
-   >>> dt2 == dt1
-   True
-   >>> print(dt2 - dt1)
-   0:00:00
-   >>> print(dt2 - dt0)
-   23:00:00
-   >>> print(dt1 - dt0)
-   1 day, 0:00:00
-   ```
-
-See [PEP 615](https://www.python.org/dev/peps/pep-0615/) and [the documentation](https://docs.python.org/3/library/zoneinfo.html) for more information than you would ever want about working with the cache.
-
-					</textarea>
-				</section>
-				
-				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
-					<textarea data-template>
-# Using `zoneinfo`
-
-First introduced in Python 3.9. Available as a backport to Python 3.6+:
-
-```python
-try:
-    from backports import zoneinfo
-except ImportError:
-    import zoneinfo
-```
-
-`tzdata` is available for all versions of Python (including 2.7).
-
-  - Safest: declare an unconditional dependency on `tzdata` if you need time zone data.
-  - Good enough: Only depend on `tzdata` on Windows: `tzdata; sys_platform == 'win32'`
-
---
-
-# Using `zoneinfo`
-
-Construct aware datetime:
-
-```python
->>> dt = datetime(2020, 11, 12, 19, tzinfo=ZoneInfo("America/Chicago"))
->>> print(dt)
-2020-11-12 19:00:00-06:00
-
->>> print(datetime.now(ZoneInfo("America/Chicago")))
-2020-11-12 19:46:21.211438-06:00
-```
-
-<br/>
-
-Convert between time zones
-
-```python
->>> print(dt.astimezone(ZoneInfo("Europe/Paris")))
-2020-11-13 02:00:00+01:00
-```
-
 --
 
 # Using `zoneinfo`: Absolute time semantics
@@ -945,73 +997,6 @@ def absolute_diff(dt1: datetime, dt2: datetime) -> timedelta:
 
     return dt1 - dt2
 ```
-
---
-
-<!-- .slide: data-visibility="hidden" -->
-
-# `zoneinfo`: IANA keys
-
-## `str` and `repr` behavior:
-
-```python
->>> NYC = zoneinfo.ZoneInfo("America/New_York")
->>> str(NYC)
-'America/New_York'
->>> repr(NYC)
-zoneinfo.ZoneInfo(key='America/New_York')
-```
-
-The `str` representation falls back to the `repr` if `key=None`:
-
-```
->>> with open("/path/to/zoneinfo/America/New_York", "rb") as f:
-...    NYC_f = ZoneInfo.from_file(f)
-...
->>> str(NYC_f)
-zoneinfo.ZoneInfo(<_io.BufferedReader name='/usr/share/zoneinfo/America/New_York'>)
-```
-
-Access the IANA key from the `ZoneInfo.key` attribute:
-
-```python
->>> NYC.key
-'America/New_York'
->>> print(NYC_f.key)
-None
-```
-
---
-
-## Available time zones
-
-The `zoneinfo.available_timezones()` function returns a `set` object containing all valid keys available on the system:
-
-```python
-import random
-import zoneinfo
-
-def random_zone() -> str:
-    return random.sample(zoneinfo.available_timezones(), 1)[0]
-```
-<br/>
-
-```
->>> random_zone()
-'Asia/Bishkek'
->>> random_zone()
-'Asia/Magadan'
->>> random_zone()
-'Europe/Chisinau'
->>> random_zone()
-'Egypt'
->>> random_zone()
-'Pacific/Wallis'
->>> random_zone()
-'America/Santiago'
-```
-
-**Warning**: *Don't display this to users!* IANA keys are not intended to be user-facing strings. See [the note in the documentation](https://docs.python.org/3.9/library/zoneinfo.html#zoneinfo.ZoneInfo.key) about this.
 
 					</textarea>
 				</section>
