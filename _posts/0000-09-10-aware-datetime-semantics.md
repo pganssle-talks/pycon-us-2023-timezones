@@ -20,7 +20,7 @@ False
 
 ```python
 >>> x == z
-False
+True
 ```
 <fragment/>
 <br/>
