@@ -1,6 +1,7 @@
 # History of Python's Time Zones
 
 When `datetime` was introduced in [Python 2.3](https://docs.python.org/3/whatsnew/2.3.html#date-time-type), there were *no* concrete time zones in the standard library.
+<div class="small-spacer"></div>
 
 ```python
 from dateutil import relativedelta as rd  # Cheating...
@@ -74,11 +75,9 @@ print(dt_after)    # OH NO!
 
 --
 
-# History of Python's Time Zones: Ambiguous time problem
-<br/>
+# Ambiguous times
 
 Ambiguous times are times where the same "wall time" occurs twice, such as during a DST to STD transition.
-
 <br/>
 
 ```python
@@ -106,7 +105,7 @@ There can be multiple times in a time zone differentiated by their offset!
 
 --
 
-# History of Python's Time Zones: Imaginary times
+# Imaginary times
 
 The complement of ambiguous times is imaginary times — wall times that don't exist in a given time zone, such as during an STD to DST transition.
 

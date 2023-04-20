@@ -43,10 +43,8 @@ As an aside, in 1996 they decided that having the sun set after midnight in the 
 
 # Complicated time zones
 <br/>
-<br/>
 
 ## More than one DST transition per year
-<br/>
 
 <ul>
     <li>
