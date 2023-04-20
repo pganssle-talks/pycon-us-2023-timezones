@@ -35,9 +35,14 @@ class ET(tzinfo):
 
 # History of Python's Time Zones: Concrete Time Zones
 
-- UTC / Fixed Offsets
+- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
 - Local time
 - IANA Time Zones
+
+<p style="text-align: center">
+<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
+     class="fragment" data-fragment-index="1" />
+</p>
 
 --
 
@@ -126,15 +131,3 @@ for i in range(3):
 
 Notice the lack of a `2004-04-04 02:30:00`!
 
---
-
-# History of Python's Time Zones: Concrete Time Zones
-
-- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
-- Local time
-- IANA Time Zones
-
-<p style="text-align: center">
-<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
-     class="fragment" data-fragment-index="1" />
-</p>
