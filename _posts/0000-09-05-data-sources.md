@@ -25,7 +25,7 @@
 
 - When the system has IANA time zone data available, it is used
     - Defaults to well-known deployment locations
-    - Configurable in-program using `zoneinf.reset_tzpath`
+    - Configurable in-program using `zoneinfo.reset_tzpath`
     - Configurable with environment variable `PYTHONTZPATH`
     - Default can be set at compile time
 
