@@ -38,10 +38,8 @@ for dt in closing_times:
 
 --
 
-<div style="position: fixed; display: flex; align-items: center; justify-content: space-around; top: 40%; font-size: 3rem">
-<div style="max-width: 80%">
+<div style="font-size: 3rem;">
 When storing datetimes where the <em>wall time</em> matters (e.g. meetings), you must store local time, because the mapping between UTC and local time is <em>not stable</em>.</div>
-</div>
 
 --
 
