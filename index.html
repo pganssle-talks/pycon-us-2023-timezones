@@ -87,6 +87,8 @@ OK, so we've got a lot to cover and only 30 minutes to cover it in, so let's jum
 
 - Reference time zone
 - Monotonic-ish (what's a few leap seconds between friends?)
+<br/>
+<br/>
 
 ## Time zones vs. Offsets <!-- .element: class="fragment" data-fragment-index="1" -->
 
@@ -343,10 +345,8 @@ for dt in closing_times:
 
 --
 
-<div style="position: fixed; display: flex; align-items: center; justify-content: space-around; top: 40%; font-size: 3rem">
-<div style="max-width: 80%">
+<div style="font-size: 3rem;">
 When storing datetimes where the <em>wall time</em> matters (e.g. meetings), you must store local time, because the mapping between UTC and local time is <em>not stable</em>.</div>
-</div>
 
 --
 

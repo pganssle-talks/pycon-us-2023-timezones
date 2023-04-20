@@ -4,6 +4,8 @@
 
 - Reference time zone
 - Monotonic-ish (what's a few leap seconds between friends?)
+<br/>
+<br/>
 
 ## Time zones vs. Offsets <!-- .element: class="fragment" data-fragment-index="1" -->
 
