@@ -1,8 +1,8 @@
-# Thank you
+# Thank you <!-- .element: style="margin-top: 0.5em" -->
 
 <img
     src="external-images/with_time.png"
-    style="max-height: 80vh"
+    id="splash"
     alt="A hybrid of a globe and a clock"
 />
 

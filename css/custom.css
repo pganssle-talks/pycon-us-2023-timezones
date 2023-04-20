@@ -320,8 +320,16 @@ img#splash {
     border: 2px solid;
     border-color: #444;
     background: none;
-    max-width: 90%;
-    max-height: 850px;
+    max-width: 90vw;
+    max-height: 80vh;
+}
+
+img#splash-noborder {
+    border: none;
+    border-color: #444;
+    background: none;
+    max-width: 90vw;
+    max-height: 80vh;
 }
 
 img#ghscreenshot {
