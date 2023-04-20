@@ -1,4 +1,5 @@
 # `pytz`'s time zone model
+<br/>
 
 * `tzinfo` is attached *by the time zone object itself*:
 
@@ -11,6 +12,7 @@
 2017-08-11 14:00:00-0700
     tzname:   PDT;      UTC Offset:  -7.00h;        DST:      1.0h
 ```
+<br/>
 
 * `tzinfo`s are all *static offsets*:
 
@@ -21,6 +23,8 @@
 >>> print(repr(dt.tzinfo))
 &amp;lt;DstTzInfo 'America/Los_Angeles' EDT-1 day, 20:00:00 DST>
 ```
+
+<br/>
 
 * Python's model is designed to be lazy, but `pytz`'s model is *eager*
 
@@ -67,28 +71,30 @@ AmbiguousTimeError: 2004-10-31 01:30:00
 --
 
 # Problems with `pytz`'s time zone model
+<br/>
 
 * Requires eager calculation — directly attaching a `pytz` timezone gives the wrong results:
 
-```
->>> dt = datetime(2020, 5, 1, tzinfo=LOS_p)
->>> print_tzinfo(dt)
-2020-05-01 00:00:00-0753
-    tzname:   LMT;      UTC Offset:  -7.88h;        DST:      0.0h
-```
+  ```
+  >>> dt = datetime(2020, 5, 1, tzinfo=LOS_p)
+  >>> print_tzinfo(dt)
+  2020-05-01 00:00:00-0753
+      tzname:   LMT;      UTC Offset:  -7.88h;        DST:      0.0h
+  ```
+  <br/>
 
 * You must `normalize()` datetimes after you've done some arithmetic on them:
-
-
-```python
->>> dt = LOS_p.localize(datetime(2020, 5, 1))
->>> dt_add = dt + timedelta(days=180)
-
->>> print_tzinfo(dt_add)
-2018-02-07 14:00:00-0700
-    tzname:   PDT;      UTC Offset:  -7.00h;        DST:      1.0h
-
->>> print_tzinfo(LOS_p.normalize(dt_add))
-2018-02-07 13:00:00-0800
-    tzname:   PST;      UTC Offset:  -8.00h;        DST:      0.0h
-```
+  <br/>
+ 
+  ```python
+  >>> dt = LOS_p.localize(datetime(2020, 5, 1))
+  >>> dt_add = dt + timedelta(days=180)
+ 
+  >>> print_tzinfo(dt_add)
+  2018-02-07 14:00:00-0700
+      tzname:   PDT;      UTC Offset:  -7.00h;        DST:      1.0h
+ 
+  >>> print_tzinfo(LOS_p.normalize(dt_add))
+  2018-02-07 13:00:00-0800
+      tzname:   PST;      UTC Offset:  -8.00h;        DST:      0.0h
+  ```
