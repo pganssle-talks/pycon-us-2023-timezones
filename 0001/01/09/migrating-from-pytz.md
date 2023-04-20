@@ -16,22 +16,18 @@ def sixty_days_later(dt: datetime) -> datetime:
 
 <br/>
 
-<!-- Bizarrely, some combination of reveal.js, jekyll-reveal and the
-highlighter / markdown processor wants to close tags and normalize them, and I
-think this happens *twice*, so &lt;tag> won't work, you need &amplt;tag>,
-otherwise <Tag> gets turned into <tag></tag> -->
 
 ```python
 >>> sixty_days_later(pre_migration())
-datetime.datetime(2020, 3, 1, 0, 0, tzinfo=&amplt;DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>)
+datetime.datetime(2020, 3, 1, 0, 0, tzinfo=&lt;DstTzInfo 'America/New_York' EST-1 day, 19:00:00 STD>)
 
 >>> sixty_days_later(post_migration())
 ---------------------------------------------------------------------------
 AttributeError                            Traceback (most recent call last)
-&amplt;ipython-input-7-b71365e0022f> in &amplt;module>
+&lt;ipython-input-7-b71365e0022f> in &lt;module>
 ----> 1 sixty_days_later(post_migration())
 
-&amplt;ipython-input-5-f165abf34e2a> in sixty_days_later(dt)
+&lt;ipython-input-5-f165abf34e2a> in sixty_days_later(dt)
       7 def sixty_days_later(dt: datetime) -> datetime:
       8     non_normalized_dt = dt + timedelta(days=60)
 ----> 9     return dt.tzinfo.normalize(non_normalized_dt)
@@ -62,7 +58,7 @@ But also exposes `pytz`'s interface, raising a `DeprecationWarning` when `pytz`-
 
 ```python
 >>> dt = LA.localize(datetime(2020, 10, 31, 12))
-&amplt;stdin>:1: PytzUsageWarning: The localize method is no longer necessary, as
+&lt;stdin>:1: PytzUsageWarning: The localize method is no longer necessary, as
 this time zone supports the fold attribute (PEP 495). For more details on
 migrating to a PEP 495-compliant implementation, see
 https://pytz-deprecation-shim.readthedocs.io/en/latest/migration.html
