@@ -1,8 +1,11 @@
-# Python's Time Zone Model
-## `tzinfo`
+# Python's Time Zone Model: `tzinfo`
+<br/>
 
 * Time zones are provided by *subclassing* `tzinfo`.
+  <div style="height: 0.25em"></div>
+
 * Information provided is a function of the datetime:
+  <div style="height: 0.25em"></div>
 
     * `tzname`: The (usually abbreviated) name of the time zone at the given datetime
     * `utcoffset`: The offset from UTC at the given datetime
