@@ -45,6 +45,8 @@ When storing datetimes where the <em>wall time</em> matters (e.g. meetings), you
 
 --
 
+<!-- .slide: data-visibility="hidden" -->
+
 <p style="text-align: center">
 <img src="images/lebanon_news.png" alt="Lebanon wakes up in two time zones because of daylight savings spat — a news article from reuters about Lebanon changing their time zone at the last minute."
 />

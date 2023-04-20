@@ -124,10 +124,12 @@ body {
 
 .reveal h1 {
   font-size: 1.8em; 
+  margin-bottom: 0.5em;
   }
 
 .reveal h2 {
   font-size: 1.6em;
+  margin-bottom: 0.5em;
 }
 
 .reveal h3 {
@@ -320,8 +322,16 @@ img#splash {
     border: 2px solid;
     border-color: #444;
     background: none;
-    max-width: 90%;
-    max-height: 850px;
+    max-width: 90vw;
+    max-height: 80vh;
+}
+
+img#splash-noborder {
+    border: none;
+    border-color: #444;
+    background: none;
+    max-width: 90vw;
+    max-height: 80vh;
 }
 
 img#ghscreenshot {
@@ -408,18 +418,17 @@ img#ghscreenshot {
 
 .reveal .slides {
   height: 98%;
-  width: 90%;
-  max-width: 90%;
+  width: 80%;
+  max-width: 80%;
   top: auto;
   bottom: auto;
-  left: 5%;
-  right: 5%;
+  left: 10%;
+  right: 10%;
   margin-left: 0px;
   margin-right: 0px;
   margin-top: auto !important;
   margin-bottom: auto !important;
 }
-
 
 .reveal .slides>section {
   min-height: 90% !important;
@@ -530,4 +539,11 @@ code.lang-C {
 
 .emoji {
     font-family: Noto Color Emoji !important;
+}
+
+/********** Spacer thing
+*/
+
+.small-spacer {
+    height: 0.25em;
 }

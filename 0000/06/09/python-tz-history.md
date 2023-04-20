@@ -1,6 +1,7 @@
 # History of Python's Time Zones
 
 When `datetime` was introduced in [Python 2.3](https://docs.python.org/3/whatsnew/2.3.html#date-time-type), there were *no* concrete time zones in the standard library.
+<div class="small-spacer"></div>
 
 ```python
 from dateutil import relativedelta as rd  # Cheating...
@@ -34,9 +35,14 @@ class ET(tzinfo):
 
 # History of Python's Time Zones: Concrete Time Zones
 
-- UTC / Fixed Offsets
+- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
 - Local time
 - IANA Time Zones
+
+<p style="text-align: center">
+<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
+     class="fragment" data-fragment-index="1" />
+</p>
 
 --
 
@@ -74,11 +80,9 @@ print(dt_after)    # OH NO!
 
 --
 
-# History of Python's Time Zones: Ambiguous time problem
-<br/>
+# Ambiguous times
 
 Ambiguous times are times where the same "wall time" occurs twice, such as during a DST to STD transition.
-
 <br/>
 
 ```python
@@ -106,7 +110,7 @@ There can be multiple times in a time zone differentiated by their offset!
 
 --
 
-# History of Python's Time Zones: Imaginary times
+# Imaginary times
 
 The complement of ambiguous times is imaginary times — wall times that don't exist in a given time zone, such as during an STD to DST transition.
 
@@ -127,15 +131,3 @@ for i in range(3):
 
 Notice the lack of a `2004-04-04 02:30:00`!
 
---
-
-# History of Python's Time Zones: Concrete Time Zones
-
-- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
-- Local time
-- IANA Time Zones
-
-<p style="text-align: center">
-<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
-     class="fragment" data-fragment-index="1" />
-</p>

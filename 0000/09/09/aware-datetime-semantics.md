@@ -54,33 +54,79 @@ True
 
 # What does equality mean?
 
-1. Wall time semantics: compare only naïve portions
+<div style="display:flex; flex-flow: row nowrap; justify-content: space-between; align-items: flex-start; padding: 1rem;">
 
-    - `x == y   # False`
-    - `x == z   # False`
-    - `y == z   # True`
+<div style="flex-grow: 2">
+<ol>
+    <li>Wall time semantics: compare only naïve portions<br/>
+    <table style="margin-top: 0.5em">
+        <tr>
+            <td><tt>x == y</tt></td>
+            <td><tt>False</tt></td>
+        </tr>
+        <tr>
+            <td><tt>x == z</tt></td>
+            <td><tt>False</tt></td>
+        </tr>
+        <tr>
+            <td><tt>y == z</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+    </table>
+    <br/>
+    </li>
+    <li>Absolute time semantics: convert to UTC<br/>
+    <table style="margin-top: 0.5em">
+        <tr>
+            <td><tt>x == y</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+        <tr>
+            <td><tt>x == z</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+        <tr>
+            <td><tt>y == z</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+    </table>
+    </li>
+</ol>
+</div>
 
-2. Absolute time semantics: convert to UTC
+<div style="border: 1px solid; padding-left: 5px; padding-right: 5px; background: #fff; align-items: flex-start">
+<div class="fragment disappearing-fragment nospace-fragment fade-out" data-fragment-index="1">
+<u>Wall Times:</u><br/>
+<tt>
+    x: <b>2007-03-25 01:00:00</b>+01:00<br/><br/>
+    y: <b>2007-03-25 00:00:00</b>+00:00<br/><br/>
+    z: <b>2007-03-25 00:00:00</b>+00:00<br/><br/>
+</tt>
+</div>
+<div class = "fragment nospace-fragment fade-in " data-fragment-index="1">
+<u>UTC:</u><br/>
+<tt>
+    x: 2007-03-25 <b>00:00:00+00:00</b><br/><br/>
+    y: 2007-03-25 <b>00:00:00+00:00</b><br/><br/>
+    z: 2007-03-25 <b>00:00:00+00:00</b><br/><br/>
+</tt>
+</div>
+</div>
+</div>
 
-    - `x == y   # True`
-    - `y == z   # True`
-    - `x == z   # True`
-
-<br/>
-
-## Another hint <!-- .element: class="fragment" data-fragment-index="1" -->
+## Another hint <!-- .element: class="fragment" data-fragment-index="2" -->
 
 ```python
 >>> x.tzinfo is y.tzinfo
 True
 ```
-<!-- .element: class="fragment" data-fragment-index="1" -->
+<!-- .element: class="fragment" data-fragment-index="2" -->
 
 ```python
 >>> x.tzinfo is z.tzinfo
 False
 ```
-<!-- .element: class="fragment" data-fragment-index="1" -->
+<!-- .element: class="fragment" data-fragment-index="2" -->
 
 --
 

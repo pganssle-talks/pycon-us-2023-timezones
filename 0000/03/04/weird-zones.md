@@ -43,10 +43,8 @@ As an aside, in 1996 they decided that having the sun set after midnight in the 
 
 # Complicated time zones
 <br/>
-<br/>
 
 ## More than one DST transition per year
-<br/>
 
 <ul>
     <li>
@@ -150,8 +148,10 @@ OK so maybe you say, "Ok, daylight saving time transitions can happen at any tim
 
 <!-- .slide: data-transition="slide-in none" -->
 
-## `Asia/Shanghai`
-![Asia/Shanghai time zone map](images/china_shanghai.png)
+<h2 style="margin-top: 0.5em; font-family: monospace">Asia/Shanghai</h2>
+
+![Asia/Shanghai time zone map](images/china_shanghai.png) <!-- .element: id="splash-noborder" -->
+
 
 Notes:
 
@@ -165,8 +165,9 @@ In China, they decided it would be a great idea for there to be one time zone fo
 
 <!-- .slide: data-transition="none slide-out" -->
 
-## `Asia/Urumqi`
-![Asia/Shanghai time zone map](images/china_overlay.png)
+<h2 style="margin-top: 0.5em; font-family: monospace">Asia/Urumqi</h2>
+
+![Asia/Shanghai time zone map](images/china_overlay.png) <!-- .element: id="splash-noborder" -->
 
 Notes:
 

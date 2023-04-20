@@ -166,10 +166,8 @@ As an aside, in 1996 they decided that having the sun set after midnight in the 
 
 # Complicated time zones
 <br/>
-<br/>
 
 ## More than one DST transition per year
-<br/>
 
 <ul>
     <li>
@@ -273,8 +271,10 @@ OK so maybe you say, "Ok, daylight saving time transitions can happen at any tim
 
 <!-- .slide: data-transition="slide-in none" -->
 
-## `Asia/Shanghai`
-![Asia/Shanghai time zone map](images/china_shanghai.png)
+<h2 style="margin-top: 0.5em; font-family: monospace">Asia/Shanghai</h2>
+
+![Asia/Shanghai time zone map](images/china_shanghai.png) <!-- .element: id="splash-noborder" -->
+
 
 Notes:
 
@@ -288,8 +288,9 @@ In China, they decided it would be a great idea for there to be one time zone fo
 
 <!-- .slide: data-transition="none slide-out" -->
 
-## `Asia/Urumqi`
-![Asia/Shanghai time zone map](images/china_overlay.png)
+<h2 style="margin-top: 0.5em; font-family: monospace">Asia/Urumqi</h2>
+
+![Asia/Shanghai time zone map](images/china_overlay.png) <!-- .element: id="splash-noborder" -->
 
 Notes:
 
@@ -349,6 +350,8 @@ When storing datetimes where the <em>wall time</em> matters (e.g. meetings), you
 
 --
 
+<!-- .slide: data-visibility="hidden" -->
+
 <p style="text-align: center">
 <img src="images/lebanon_news.png" alt="Lebanon wakes up in two time zones because of daylight savings spat — a news article from reuters about Lebanon changing their time zone at the last minute."
 />
@@ -368,15 +371,18 @@ When storing datetimes where the <em>wall time</em> matters (e.g. meetings), you
 				
 				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
 					<textarea data-template>
-# Python's Time Zone Model
-## `tzinfo`
+# Python's Time Zone Model: `tzinfo`
+<br/>
 
 * Time zones are provided by *subclassing* `tzinfo`.
+  <div style="height: 0.25em"></div>
+
 * Information provided is a function of the datetime:
+  <div style="height: 0.25em"></div>
 
     * `tzname`: The (usually abbreviated) name of the time zone at the given datetime
     * `utcoffset`: The offset from UTC at the given datetime
-    * `dst`: The size of the `datetime`'s DST offset (usually 0 or 1 hour)
+    * <span class="fragment disappearing-fragment nospace-fragment fade-out" data-fragment-index="1">`dst`: The size of the `datetime`'s DST offset (usually 0 or 1 hour)</span><span class="fragment nospace-fragment" data-fragment-index="1" style="color: #b70000"><strike>`dst`: The size of the `datetime`'s DST offset (usually 0 or 1 hour)</strike></span>
 
 Notes:
 
@@ -392,6 +398,7 @@ Python's time zone model is based around an abstract base class `tzinfo`. The id
 # History of Python's Time Zones
 
 When `datetime` was introduced in [Python 2.3](https://docs.python.org/3/whatsnew/2.3.html#date-time-type), there were *no* concrete time zones in the standard library.
+<div class="small-spacer"></div>
 
 ```python
 from dateutil import relativedelta as rd  # Cheating...
@@ -425,9 +432,14 @@ class ET(tzinfo):
 
 # History of Python's Time Zones: Concrete Time Zones
 
-- UTC / Fixed Offsets
+- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
 - Local time
 - IANA Time Zones
+
+<p style="text-align: center">
+<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
+     class="fragment" data-fragment-index="1" />
+</p>
 
 --
 
@@ -465,11 +477,9 @@ print(dt_after)    # OH NO!
 
 --
 
-# History of Python's Time Zones: Ambiguous time problem
-<br/>
+# Ambiguous times
 
 Ambiguous times are times where the same "wall time" occurs twice, such as during a DST to STD transition.
-
 <br/>
 
 ```python
@@ -497,7 +507,7 @@ There can be multiple times in a time zone differentiated by their offset!
 
 --
 
-# History of Python's Time Zones: Imaginary times
+# Imaginary times
 
 The complement of ambiguous times is imaginary times — wall times that don't exist in a given time zone, such as during an STD to DST transition.
 
@@ -518,25 +528,13 @@ for i in range(3):
 
 Notice the lack of a `2004-04-04 02:30:00`!
 
---
-
-# History of Python's Time Zones: Concrete Time Zones
-
-- UTC / Fixed Offsets <span class="fragment" style="color: green" data-fragment-index="1">✔ Added in 3.2</span>
-- Local time
-- IANA Time Zones
-
-<p style="text-align: center">
-<img src="images/whatsnew3.2.png" alt="What's new in Python 3.2 excerpt"
-     class="fragment" data-fragment-index="1" />
-</p>
-
 					</textarea>
 				</section>
 				
 				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
 					<textarea data-template>
 # `pytz`'s time zone model
+<br/>
 
 * `tzinfo` is attached *by the time zone object itself*:
 
@@ -549,6 +547,7 @@ Notice the lack of a `2004-04-04 02:30:00`!
 2017-08-11 14:00:00-0700
     tzname:   PDT;      UTC Offset:  -7.00h;        DST:      1.0h
 ```
+<br/>
 
 * `tzinfo`s are all *static offsets*:
 
@@ -559,6 +558,8 @@ Notice the lack of a `2004-04-04 02:30:00`!
 >>> print(repr(dt.tzinfo))
 &amp;lt;DstTzInfo 'America/Los_Angeles' EDT-1 day, 20:00:00 DST>
 ```
+
+<br/>
 
 * Python's model is designed to be lazy, but `pytz`'s model is *eager*
 
@@ -605,31 +606,33 @@ AmbiguousTimeError: 2004-10-31 01:30:00
 --
 
 # Problems with `pytz`'s time zone model
+<br/>
 
 * Requires eager calculation — directly attaching a `pytz` timezone gives the wrong results:
 
-```
->>> dt = datetime(2020, 5, 1, tzinfo=LOS_p)
->>> print_tzinfo(dt)
-2020-05-01 00:00:00-0753
-    tzname:   LMT;      UTC Offset:  -7.88h;        DST:      0.0h
-```
+  ```
+  >>> dt = datetime(2020, 5, 1, tzinfo=LOS_p)
+  >>> print_tzinfo(dt)
+  2020-05-01 00:00:00-0753
+      tzname:   LMT;      UTC Offset:  -7.88h;        DST:      0.0h
+  ```
+  <br/>
 
 * You must `normalize()` datetimes after you've done some arithmetic on them:
-
-
-```python
->>> dt = LOS_p.localize(datetime(2020, 5, 1))
->>> dt_add = dt + timedelta(days=180)
-
->>> print_tzinfo(dt_add)
-2018-02-07 14:00:00-0700
-    tzname:   PDT;      UTC Offset:  -7.00h;        DST:      1.0h
-
->>> print_tzinfo(LOS_p.normalize(dt_add))
-2018-02-07 13:00:00-0800
-    tzname:   PST;      UTC Offset:  -8.00h;        DST:      0.0h
-```
+  <br/>
+ 
+  ```python
+  >>> dt = LOS_p.localize(datetime(2020, 5, 1))
+  >>> dt_add = dt + timedelta(days=180)
+ 
+  >>> print_tzinfo(dt_add)
+  2018-02-07 14:00:00-0700
+      tzname:   PDT;      UTC Offset:  -7.00h;        DST:      1.0h
+ 
+  >>> print_tzinfo(LOS_p.normalize(dt_add))
+  2018-02-07 13:00:00-0800
+      tzname:   PST;      UTC Offset:  -8.00h;        DST:      0.0h
+  ```
 
 					</textarea>
 				</section>
@@ -751,6 +754,7 @@ See my blog posts: [Why naïve times are local times](https://blog.ganssle.io/ar
 
 <div style="text-align:center">
 <img 
+    style="max-height:500px"
     src="images/zoneinfo-documentation.png"
     alt="A screenshot of Python 3.9's zoneinfo documentation."/>
 </div>
@@ -824,33 +828,79 @@ True
 
 # What does equality mean?
 
-1. Wall time semantics: compare only naïve portions
+<div style="display:flex; flex-flow: row nowrap; justify-content: space-between; align-items: flex-start; padding: 1rem;">
 
-    - `x == y   # False`
-    - `x == z   # False`
-    - `y == z   # True`
+<div style="flex-grow: 2">
+<ol>
+    <li>Wall time semantics: compare only naïve portions<br/>
+    <table style="margin-top: 0.5em">
+        <tr>
+            <td><tt>x == y</tt></td>
+            <td><tt>False</tt></td>
+        </tr>
+        <tr>
+            <td><tt>x == z</tt></td>
+            <td><tt>False</tt></td>
+        </tr>
+        <tr>
+            <td><tt>y == z</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+    </table>
+    <br/>
+    </li>
+    <li>Absolute time semantics: convert to UTC<br/>
+    <table style="margin-top: 0.5em">
+        <tr>
+            <td><tt>x == y</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+        <tr>
+            <td><tt>x == z</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+        <tr>
+            <td><tt>y == z</tt></td>
+            <td><tt>True</tt></td>
+        </tr>
+    </table>
+    </li>
+</ol>
+</div>
 
-2. Absolute time semantics: convert to UTC
+<div style="border: 1px solid; padding-left: 5px; padding-right: 5px; background: #fff; align-items: flex-start">
+<div class="fragment disappearing-fragment nospace-fragment fade-out" data-fragment-index="1">
+<u>Wall Times:</u><br/>
+<tt>
+    x: <b>2007-03-25 01:00:00</b>+01:00<br/><br/>
+    y: <b>2007-03-25 00:00:00</b>+00:00<br/><br/>
+    z: <b>2007-03-25 00:00:00</b>+00:00<br/><br/>
+</tt>
+</div>
+<div class = "fragment nospace-fragment fade-in " data-fragment-index="1">
+<u>UTC:</u><br/>
+<tt>
+    x: 2007-03-25 <b>00:00:00+00:00</b><br/><br/>
+    y: 2007-03-25 <b>00:00:00+00:00</b><br/><br/>
+    z: 2007-03-25 <b>00:00:00+00:00</b><br/><br/>
+</tt>
+</div>
+</div>
+</div>
 
-    - `x == y   # True`
-    - `y == z   # True`
-    - `x == z   # True`
-
-<br/>
-
-## Another hint <!-- .element: class="fragment" data-fragment-index="1" -->
+## Another hint <!-- .element: class="fragment" data-fragment-index="2" -->
 
 ```python
 >>> x.tzinfo is y.tzinfo
 True
 ```
-<!-- .element: class="fragment" data-fragment-index="1" -->
+<!-- .element: class="fragment" data-fragment-index="2" -->
 
 ```python
 >>> x.tzinfo is z.tzinfo
 False
 ```
-<!-- .element: class="fragment" data-fragment-index="1" -->
+<!-- .element: class="fragment" data-fragment-index="2" -->
 
 --
 
@@ -1175,7 +1225,13 @@ Other than the deprecation warning, this will be a silent behavior change!
 				
 				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n--\n$" data-notes="^Note:">
 					<textarea data-template>
-# Thank you
+# Thank you <!-- .element: style="margin-top: 0.5em" -->
+
+<img
+    src="external-images/with_time.png"
+    id="splash"
+    alt="A hybrid of a globe and a clock"
+/>
 
 					</textarea>
 				</section>
