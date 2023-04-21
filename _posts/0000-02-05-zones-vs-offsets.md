@@ -29,8 +29,10 @@ Another concept that is important to know is the difference between time zones a
 
 UTC-6 is an offset. It means that you should add 6 hours to the local time to get a time in UTC.
 
-`America/Chicago` is a time zone - it's a set of rules for what offsets and abbreviations apply in a given region as a function of time.
+`America/Chicago` is a time zone - it's the set of rules for what offsets and abbreviations apply in a given region as a function of time. In this case, Chicago is the largest city in the region that observes these rules, which is why the zone is called that.
 
-`CST`, which is the abbreviation for the offset that applies in Chicago right now, is a highly context-dependent abbreviation referring to an offset. In our context, it means Central Standard Time, but if you're in Cuba, it refers to Cuba Standard Time, and if you're in China, it refers to China standard time. Word of advice: never rely on these 3-letter abbreviations. Don't rely on them meaning a specific thing, and don't even rely on every zone having an associated 3-letter abbreviation.
+`CST` is a highly context-dependent abbreviation referring to an offset. In Chicago, it means Central Standard Time, which is UTC-6, but if you're in Cuba, it means UTC-5, and if you're in China, it means UTC+8.
+
+Word of advice: never rely on these 3-letter abbreviations. Don't try to parse them into a specific time zone if you can avoid it, don't rely on them meaning a specific thing, and don't even rely on every zone having an associated 3-letter abbreviation.
 
 [1m 15s; T: 1m 45s]
