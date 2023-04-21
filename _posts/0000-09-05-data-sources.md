@@ -18,7 +18,7 @@
 
 <div style="text-align:center">
 <img 
-    style="max-height:500px"
+    style="max-height:45vh"
     src="images/zoneinfo-documentation.png"
     alt="A screenshot of Python 3.9's zoneinfo documentation."/>
 </div>
